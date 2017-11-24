@@ -1,15 +1,15 @@
 def score(game):
-    result = 0
+    totalScore = 0
     frame = 1
     in_first_half = True
     for i in range(len(game)):
         if game[i] == '/':
             last = get_value(game[i - 1])
-            result += 10 - last
+            totalScore += 10 - last
         else:
-            result += get_value(game[i])
+            totalScore += get_value(game[i])
         if frame < 10 and get_value(game[i]) == 10:
-            result = getResult(game, i, result)
+            totalScore = getScore(game, i, totalScore)
         if not in_first_half:
             frame += 1
         if in_first_half:
@@ -19,19 +19,19 @@ def score(game):
         if game[i] == 'X' or game[i] == 'x':
             in_first_half = True
             frame += 1
-    return result
+    return totalScore
 
 
-def getResult(game, i, result):
+def getScore(game, i, totalScore):
     if game[i] == '/':
-        result += get_value(game[i + 1])
+        totalScore += get_value(game[i + 1])
     elif game[i] == 'X' or game[i] == 'x':
-        result += get_value(game[i + 1])
+        totalScore += get_value(game[i + 1])
         if game[i + 2] == '/':
-            result += 10 - get_value(game[i + 1])
+            totalScore += 10 - get_value(game[i + 1])
         else:
-            result += get_value(game[i + 2])
-    return result
+            totalScore += get_value(game[i + 2])
+    return totalScore
 
 
 def get_value(char):
