@@ -3,23 +3,33 @@ def score(game):
     frame = 1
     in_first_half = True
     for i in range(len(game)):
-        if game[i] == '/':
-            last = get_value(game[i - 1])
-            totalScore += 10 - last
-        else:
-            totalScore += get_value(game[i])
+        totalScore = ifSpare(game, i, totalScore)
         if frame < 10 and get_value(game[i]) == 10:
             totalScore = getScore(game, i, totalScore)
-        if not in_first_half:
-            frame += 1
-        if in_first_half:
-            in_first_half = False
-        else:
-            in_first_half = True
+        in_first_half, frame = decideFirstHalf(in_first_half, frame)
         if game[i] == 'X' or game[i] == 'x':
             in_first_half = True
             frame += 1
     return totalScore
+
+
+def ifSpare(game, i, totalScore):
+    if game[i] == '/':
+        last = get_value(game[i - 1])
+        totalScore += 10 - last
+    else:
+        totalScore += get_value(game[i])
+    return totalScore
+
+
+def decideFirstHalf(in_first_half, frame):
+    if not in_first_half:
+        frame += 1
+    if in_first_half:
+        in_first_half = False
+    else:
+        in_first_half = True
+    return in_first_half, frame
 
 
 def getScore(game, i, totalScore):
